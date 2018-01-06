@@ -24,5 +24,5 @@ module.exports = function(req, res) {
           .then(token => res.send({ token: token }));
       });
     })
-    .catch((err) => res.status(422).send({ error: err }))
+    .catch((err) => res.status(422).send({ error: err })) //Change error code here.
 }

@@ -1,17 +1,18 @@
 const admin = require('firebase-admin');
 
 module.exports = function(req, res) {
-  //Verify the user provided a phone
+  // Verify the user provided a phone
   if (!req.body.phone) {
-    return res.status(422).send({ error: 'bad input' })
+    return res.status(422).send({ error: 'Bad Input' });
   }
-  //Format the phone number to remove dashes or parens
+
+  // Format the phone number to remove dashes and parens
   const phone = String(req.body.phone).replace(/[^\d]/g, "");
 
-  //Create new user account with that phone number
+  // Create a new user account using that phone number
   admin.auth().createUser({ uid: phone })
     .then(user => res.send(user))
-    .catch(err => res.status(422).send({ err: error }))
+    // .catch(err => res.status(422).send({ error: err }));
 
-  //Respond to that user request saying the account was made
+  // Respond to the user request, saying the account was made
 }
