@@ -4,13 +4,11 @@ module.exports = function(req, res) {
   // Create a new Expo SDK client
   const expo = new Expo();
 
-  console.log('hello send push');
-
   // Create the messages that you want to send to clents
   const messages = [{
-    to: 'ExponentPushToken[YcZt7NIlw_Sidh4EsdsOYC]',
+    to: req.body.pushToken,
     sound: 'default',
-    body: 'test body',
+    body: req.body.info,
     data: { text: req.body.text },
   }];
 
@@ -19,23 +17,20 @@ module.exports = function(req, res) {
   // recommend you batch your notifications to reduce the number of requests
   // and to compress them (notifications with similar content will get
   // compressed).
-  // const chunks = expo.chunkPushNotifications(messages);
+  const chunks = expo.chunkPushNotifications(messages);
 
-    // Send the chunks to the Expo push notification service. There are
-    // different strategies you could use. A simple one is to send one chunk at a
-    // time, which nicely spreads the load out over time:
-    // for (const chunk of chunks) {
-      console.log('hello try')
-      console.log(messages)
-      expo.sendPushNotificationsAsync(messages)
-        .then(function(receipts) {
-          console.log('finish send');
-          res.send({ success: true });
-        })
-        .catch(function(err) {
-          console.log('send notification error');
-          console.error(err);
-          res.status(422).send({ error: err })
-        });
-    // }
+  // Send the chunks to the Expo push notification service. There are
+  // different strategies you could use. A simple one is to send one chunk at a
+  // time, which nicely spreads the load out over time:
+  for (const chunk of chunks) {
+    expo.sendPushNotificationsAsync(messages)
+      .then(function(receipts) {
+        res.send({ success: true });
+      })
+      .catch(function(err) {
+        console.log('send notification error');
+        console.error(err);
+        res.status(422).send({ error: err })
+      });
+  }
 };

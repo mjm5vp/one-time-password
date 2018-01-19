@@ -5,6 +5,7 @@ const serviceAccount = require('./service_account.json');
 const requestOneTimePassword = require('./request_one_time_password');
 const verifyOneTimePassword = require('./verify_one_time_password');
 const sendPushNotification = require('./send_push_notification');
+const deleteUser = require('./delete_user');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -15,3 +16,4 @@ exports.createUser = functions.https.onRequest(createUser)
 exports.requestOneTimePassword = functions.https.onRequest(requestOneTimePassword)
 exports.verifyOneTimePassword = functions.https.onRequest(verifyOneTimePassword)
 exports.sendPushNotification = functions.https.onRequest(sendPushNotification)
+exports.deleteUser = functions.https.onRequest(deleteUser)
