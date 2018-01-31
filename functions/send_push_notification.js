@@ -5,12 +5,13 @@ module.exports = function(req, res) {
   const expo = new Expo();
 
   // Create the messages that you want to send to clents
-  const messages = [{
-    to: req.body.pushToken,
-    sound: 'default',
-    body: req.body.info,
-    data: { text: req.body.text },
-  }];
+  const messages = req.body.pushTokens.map(pushToken => {
+    return {
+      to: pushToken,
+      body: req.body.info,
+      data: { text: req.body.text }
+    }
+  })
 
   // The Expo push notification service accepts batches of notifications so
   // that you don't need to send 1000 requests to send 1000 notifications. We
