@@ -1,6 +1,10 @@
 const admin = require('firebase-admin')
 const twilio = require('./twilio')
-const text = require('textbelt')
+let plivo = require('plivo')
+let client = new plivo.Client(
+  'MAMGMYMMJINMFHNMI0ZG',
+  'NWZiMjQxNmMxMDdiYzQzOThhMDZkOTk0YmFkNjY1'
+)
 
 module.exports = function(req, res) {
   if (!req.body.phone) {
@@ -15,12 +19,13 @@ module.exports = function(req, res) {
     .then(userRecord => {
       const code = Math.floor(Math.random() * 8999 + 1000)
 
-      text.send(phone, 'Your code is ' + code, undefined, function(err) {
-        if (err) {
-          console.log(err)
-        }
-      })
+      client.messages
+        .create('2027953199', phone, 'Your code is ' + code)
+        .then(function(message_created) {
+          console.log(message_created)
+        })
 
+      // Old Twilio method
       // twilio.messages.create(
       //   {
       //     body: 'Your code is ' + code,
