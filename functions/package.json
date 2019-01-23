@@ -5,6 +5,7 @@
     "expo-server-sdk": "^2.3.3",
     "firebase-admin": "~5.2.1",
     "firebase-functions": "^0.6.2",
+    "textbelt": "0.0.4",
     "twilio": "^3.0.0-rc.13"
   },
   "private": true
