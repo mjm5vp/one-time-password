@@ -1,10 +1,8 @@
 const admin = require('firebase-admin')
-const twilio = require('./twilio')
+
+import { PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN } from './plivo'
 let plivo = require('plivo')
-let client = new plivo.Client(
-  'MAMGMYMMJINMFHNMI0ZG',
-  'NWZiMjQxNmMxMDdiYzQzOThhMDZkOTk0YmFkNjY1'
-)
+let client = new plivo.Client(PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN)
 
 module.exports = function(req, res) {
   if (!req.body.phone) {
@@ -20,34 +18,21 @@ module.exports = function(req, res) {
       const code = Math.floor(Math.random() * 8999 + 1000)
 
       client.messages
-        .create('2027953199', phone, 'Your code is ' + code)
+        .create('12027953199', '1' + phone, 'Your code is ' + code)
         .then(function(message_created) {
-          console.log(message_created)
+          admin
+            .database()
+            .ref('users/' + phone)
+            .update({ code: code, codeValid: true }, () => {
+              res.send({ success: true })
+            })
         })
-
-      // Old Twilio method
-      // twilio.messages.create(
-      //   {
-      //     body: 'Your code is ' + code,
-      //     to: phone,
-      //     from: '+12405341270'
-      //   },
-      //   err => {
-      //     if (err) {
-      //       console.log('twilio.messages.create', err)
-      //       return res.status(422).send(err)
-      //     }
-
-      //     admin
-      //       .database()
-      //       .ref('users/' + phone)
-      //       .update({ code: code, codeValid: true }, () => {
-      //         res.send({ success: true })
-      //       })
-      //   }
-      // )
+        .catch(err => {
+          return res.status(422).send(err)
+        })
     })
     .catch(err => {
+      console.log('overall error')
       res.status(422).send({ error: err })
     })
 }
