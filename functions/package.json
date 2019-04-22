@@ -3,8 +3,8 @@
   "description": "Cloud Functions for Firebase",
   "dependencies": {
     "expo-server-sdk": "^3.2.0",
-    "firebase-admin": "~5.2.1",
-    "firebase-functions": "^0.6.2",
+    "firebase-admin": "^7.3.0",
+    "firebase-functions": "^2.3.0",
     "plivo": "^4.0.5",
     "textbelt": "0.0.4",
     "twilio": "^3.0.0-rc.13"

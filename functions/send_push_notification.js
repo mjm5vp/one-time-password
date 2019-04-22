@@ -1,6 +1,6 @@
-const Expo = require('expo-server-sdk')
-
 module.exports = function(req, res) {
+  const Expo = require('expo-server-sdk').Expo
+
   // Create a new Expo SDK client
   const expo = new Expo()
 
@@ -8,8 +8,8 @@ module.exports = function(req, res) {
   const messages = req.body.friendsWithPushTokens.map(friend => {
     return {
       to: friend.pushToken,
-      body: friend.info,
-      data: { text: friend.text }
+      body: req.body.myInfo.name + ' sent you a poo!',
+      data: { text: req.body.myInfo.name }
     }
   })
 
@@ -25,15 +25,9 @@ module.exports = function(req, res) {
   // time, which nicely spreads the load out over time:
   // for (const chunk of chunks) {
   chunks.forEach((chunk, i) => {
-    console.log('forEach')
-    console.log(chunk)
     expo
       .sendPushNotificationsAsync(chunk)
       .then(function(receipts) {
-        console.log('chunks.length')
-        console.log(chunks.length)
-        console.log('i')
-        console.log(i)
         if (i === chunks.length - 1) {
           res.send({ success: true })
         }
