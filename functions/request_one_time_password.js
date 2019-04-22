@@ -1,6 +1,7 @@
 const admin = require('firebase-admin')
 
-import { PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN } from './plivo'
+const PLIVO_AUTH_ID = require('./plivo').PLIVO_AUTH_ID
+const PLIVO_AUTH_TOKEN = require('./plivo').PLIVO_AUTH_TOKEN
 
 let plivo = require('plivo')
 let client = new plivo.Client(PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN)
