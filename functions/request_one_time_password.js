@@ -20,7 +20,7 @@ module.exports = function(req, res) {
       const code = Math.floor(Math.random() * 8999 + 1000)
 
       client.messages
-        .create('12027953199', '1' + phone, 'Your code is ' + code)
+        .create('12027953199', phone, 'Your code is ' + code)
         .then(function(message_created) {
           admin
             .database()
@@ -34,6 +34,7 @@ module.exports = function(req, res) {
         })
     })
     .catch(err => {
+      console.log(err)
       console.log('overall error')
       res.status(422).send({ error: err })
     })
